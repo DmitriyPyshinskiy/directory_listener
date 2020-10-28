@@ -1,6 +1,12 @@
 package ru.pyshinskiy.handlers;
 
-public interface FileHandler extends Runnable {
-    @Override
-    void run();
+import java.io.File;
+
+public abstract class  FileHandler {
+    protected File file;
+
+    protected FileHandler(File file) {
+        this.file = file;
+    }
+
 }

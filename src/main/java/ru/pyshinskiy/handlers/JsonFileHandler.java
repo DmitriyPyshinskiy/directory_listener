@@ -3,23 +3,26 @@ package ru.pyshinskiy.handlers;
 
 import org.apache.log4j.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class JsonFileHandler implements FileHandler {
+public class JsonFileHandler extends FileHandler implements Runnable {
+
     private static final Logger LOGGER = Logger.getLogger(JsonFileHandler.class);
-    private final File file;
 
     public JsonFileHandler(File file) {
-        this.file = file;
+        super(file);
     }
 
     @Override
     public void run() {
-        LOGGER.info("JsonFileHandler running, handle file : " + file.getName());
+        LOGGER.info("JsonFileHandler is started, handle file : " + file.getName());
         LocalDateTime startTimeProcess = LocalDateTime.now();
-        LOGGER.info("Start time process - [" + startTimeProcess.toString() + "]");
+        LOGGER.info("Handler start time - [" + startTimeProcess.toString() + "]");
 
         int countLine = 0;
         try {
@@ -31,9 +34,9 @@ public class JsonFileHandler implements FileHandler {
             LOGGER.info("Count rows in file = " + countLine);
             LocalDateTime endTimeProcessing = LocalDateTime.now();
             Duration duration = Duration.between(endTimeProcessing, startTimeProcess);
-            LOGGER.info("Total time process - [" + duration + "]");
+            LOGGER.info("Handler total work time - [" + duration + "]");
         } catch (IOException e) {
-            LOGGER.error("Occurred exception : " +e.getMessage() + " Cause : " + e.getCause());
+            LOGGER.error(e.getMessage(), e);
         }
     }
 }
